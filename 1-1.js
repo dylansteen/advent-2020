@@ -8,8 +8,9 @@ function getAmounts() {
 
 async function main() {
   const amounts = await getAmounts();
+  const setAmounts = new Set(amounts);
 
-  const firstEntry = amounts.find(amount => amounts.some((otherAmount => amount + otherAmount === 2020)));
+  const firstEntry = amounts.find(amount => setAmounts.has(2020 - amount));
 
   console.log((2020 - firstEntry) * firstEntry);
 }

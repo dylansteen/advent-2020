@@ -8,14 +8,14 @@ function getAmounts() {
 
 async function main() {
   const amounts = await getAmounts();
+  const setAmounts = new Set(amounts);
+
 
   for (amount of amounts) {
     for (secondAmount of amounts) {
-      for (thirdAmount of amounts) {
-        if (amount + secondAmount + thirdAmount === 2020) {
-          console.log(amount * secondAmount * thirdAmount);
-          return;
-        }
+      if (setAmounts.has((2020 - amount - secondAmount))) {
+        console.log(amount * secondAmount * (2020 - amount - secondAmount));
+        return;
       }
     }
   }
