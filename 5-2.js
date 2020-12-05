@@ -4,48 +4,28 @@ const readFile = util.promisify(fs.readFile);
 
 function getTickets() { 
   return readFile('input.txt', 'utf8').then((data) => 
-  data.split('\n').filter(line => !!line).map(row => row.split('')));
+  data.split('\n')
+  .filter(line => !!line));
 }
 
 async function main() {
   const tickets = await getTickets();
 
-  let result = new Set(tickets.map((ticket) => {
-    let maxRow = 127;
-    let minRow = 0
+  const result = tickets.map(binaryTicket => {
 
-    let maxCol = 7;
-    let minCol = 0
+    const [row, col] = [
+      binaryTicket.substring(0, binaryTicket.length - 3),
+      binaryTicket.substring(binaryTicket.length - 3, binaryTicket.length),
+    ].map(binaryString => parseInt(binaryString, 2));
 
-    ticket.forEach((character) => {
-       if (character === 'B') {
-        minRow = upperHalf(minRow, maxRow);
-      }
-
-      if (character === 'F') {
-        maxRow = lowerHalf(minRow, maxRow);
-      }
-
-      if (character === 'R') {
-        minCol = upperHalf(minCol, maxCol);
-      }
-
-      if (character === 'L') {
-        maxCol = lowerHalf(minCol, maxCol);
-      }
-    });
-    return minRow * 8 + minCol;
-  }));
+    return row * 8 + col;
+  });
   
-
   result.forEach(seatId => { 
     if(!result.has(seatId + 1) && result.has(seatId + 2)) {
-      console.log(seatId) + 1;
+      console.log(seatId + 1);
     }
   });
 }
 
 main();
-
-const lowerHalf = (min, max) => (min + max - 1) / 2;
-const upperHalf = (min, max) => (min + max + 1) / 2;
