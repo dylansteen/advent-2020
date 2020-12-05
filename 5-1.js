@@ -4,10 +4,9 @@ const readFile = util.promisify(fs.readFile);
 
 function getTickets() { 
   return readFile('input.txt', 'utf8').then((data) => 
-    data.split('\n')
-    .filter(line => !!line)
-    .map(ticket => ticket.replace(/[BR]/g, '1').replace(/[FL]/g, '0'))
-  );
+  data.split('\n')
+  .filter(line => !!line)
+  .map(ticket => ticket.replace(/[BR]/g, '1').replace(/[FL]/g, '0')));
 }
 
 async function main() {
@@ -23,7 +22,7 @@ async function main() {
     return row * 8 + col;
   });
 
-  console.log(result);
+  console.log(result.reduce((acc, curr) => curr > acc ? curr : acc));
 }
 
 main();
