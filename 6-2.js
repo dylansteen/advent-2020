@@ -14,9 +14,12 @@ async function main() {
   const result = customsForms.map(form => { 
     const peoplesAnswers = form.split('\n');
     const groupsAnswers = peoplesAnswers.reduce((acc, curr) => [...acc, ...curr], []);
-    const groupsUniqueAnswers = [...new Set(groupsAnswers)];
+    const groupsAnswersMap = groupsAnswers.reduce((mapObject, currentAnswer) => ({
+      ...mapObject,
+      [currentAnswer]: mapObject[currentAnswer] ? mapObject[currentAnswer] + 1 : 1,
+    }), {});
 
-    return groupsUniqueAnswers.filter(uniqueAnswer => groupsAnswers.filter(answer => answer === uniqueAnswer).length === peoplesAnswers.length).length;
+    return Object.values(groupsAnswersMap).filter(answerCount => answerCount === peoplesAnswers.length).length;
   });
   console.log(result.reduce((acc, counts) => acc + counts));
 }
