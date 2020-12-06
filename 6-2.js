@@ -12,18 +12,11 @@ function getCustomsForms() {
 async function main() {
   const customsForms = await getCustomsForms();
   const result = customsForms.map(form => { 
-    const people = form.split('\n');
-    const answers = people.reduce((acc, curr) => [...acc, ...curr], []);
-    const uniqueAnswers = new Set(answers);
-    let res = 0;
+    const peoplesAnswers = form.split('\n');
+    const groupsAnswers = peoplesAnswers.reduce((acc, curr) => [...acc, ...curr], []);
+    const groupsUniqueAnswers = [...new Set(groupsAnswers)];
 
-    uniqueAnswers.forEach(uniqueAnswer => {
-      if (answers.filter(answer => answer === uniqueAnswer).length === people.length) {
-        res += 1;
-      };
-    });
-
-    return res;
+    return groupsUniqueAnswers.filter(uniqueAnswer => groupsAnswers.filter(answer => answer === uniqueAnswer).length === peoplesAnswers.length).length;
   });
   console.log(result.reduce((acc, counts) => acc + counts));
 }

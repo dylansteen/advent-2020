@@ -11,7 +11,7 @@ function getCustomsForms() {
 
 async function main() {
   const customsForms = await getCustomsForms();
-  const result = customsForms.map(form => new Set(form.split('').filter(character => character !== '\n')).size);
+  const result = customsForms.map(form => new Set(form.replace(/[\n\r]/g, '').split('')).size);
   console.log(result.reduce((acc, counts) => acc + counts));
 }
 main();
