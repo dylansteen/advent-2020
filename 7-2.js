@@ -9,16 +9,19 @@ function getBags() {
   );
 }
 
+let counter = 0;
+
 async function main() {
   const bags = await getBags();
   const [first, ...startingRule] = split(bags.find(bag => bag.startsWith('shiny gold')));
 
-  const result = startingRule.reduce((acc,rule) => acc + getInnerBags(rule, bags, 0), 0);
+  startingRule.forEach(rule => getInnerBags(rule, bags, 0));
+  console.log(counter);
 }
 
 const getInnerBags = (bag, allBags, total) => {
 
-  if (bag.includes('contain no other bags')) {
+  if(bag.includes('contain no other bags')) {
     return total + 1;
   }
 
@@ -29,14 +32,12 @@ const getInnerBags = (bag, allBags, total) => {
   }).filter(x => !!x);
 
   
-  let x = 0;
-  return mappedRules.map((mappedRule) => {
-    const emptyArray = Array.from(Array(mappedRule[1]));
-    return emptyArray.map((curr) =>  {
-      console.log(mappedRule[0]);
+
+  mappedRules.forEach(mappedRule => {
+    Array.from(Array(mappedRule[1])).forEach(() =>  {
+      counter++;
       const nextBag = allBags.find(bag => bag.startsWith(mappedRule[0]));
-      const toReturn = getInnerBags(nextBag, allBags, total);
-      return toReturn;
+      getInnerBags(nextBag, allBags, total);
     });
   });
 
