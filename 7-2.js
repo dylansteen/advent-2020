@@ -15,14 +15,14 @@ async function main() {
   const bags = await getBags();
   startingRule = bags.find(bag => bag.startsWith('shiny gold'));
 
-  getInnerBags(startingRule, bags, 0);
+  getInnerBags(startingRule, bags);
   console.log(counter);
 }
 
-const getInnerBags = (bag, allBags, total) => {
+const getInnerBags = (bag, allBags) => {
 
   if(bag.includes('contain no other bags')) {
-    return total + 1;
+    return;
   }
 
   const rules = split(bag);
@@ -37,7 +37,7 @@ const getInnerBags = (bag, allBags, total) => {
     Array.from(Array(mappedRule[1])).forEach(() =>  {
       counter++;
       const nextBag = allBags.find(bag => bag.startsWith(mappedRule[0]));
-      getInnerBags(nextBag, allBags, total);
+      getInnerBags(nextBag, allBags);
     });
   });
 
