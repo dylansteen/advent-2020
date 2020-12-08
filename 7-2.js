@@ -13,9 +13,9 @@ let counter = 0;
 
 async function main() {
   const bags = await getBags();
-  const [first, ...startingRule] = split(bags.find(bag => bag.startsWith('shiny gold')));
+  startingRule = bags.find(bag => bag.startsWith('shiny gold'));
 
-  startingRule.forEach(rule => getInnerBags(rule, bags, 0));
+  getInnerBags(startingRule, bags, 0);
   console.log(counter);
 }
 
